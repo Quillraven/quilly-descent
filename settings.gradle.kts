@@ -19,5 +19,6 @@ plugins {
 include(":core")
 include(":lwjgl3")
 include(":teavm")
+include(":tools")
 
 rootProject.name = "quilly-descent"

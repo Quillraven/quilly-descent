@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-up" width="16" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="6">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-up" width="16" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="10">
  <tileset firstgid="1" source="default.tsx"/>
  <layer id="1" name="ground" width="16" height="9">
   <data encoding="base64" compression="zlib">
-   eJx90MsKwjAQBdCI+EBtFFGxVSlYN7bqH/jYCV31/7/GO3ADlxFdHJLJZJJJyhDC4If+n5wpYA0ZdLCFHCLjJWw4r5ifM77DkPUWzzh6eznDrODNO62+dPt3MOH8AUfqZEwWMJVeUz66fbmLR3xPIfWV5A8cW+7Vt2gfJ/Yf5V/SWa38k9YmT97fY5yF7zeO+a+p/5c7w+4/wxVqaDi/kK7XoqEbfAAEWhm1
+   eJxd0F0KglAQhmGjyD1U1k1L6IduXIFpIUQtoFIkaAdl4Y2r7jvwDgxdPMxxPHP8jpMoiq6SyQ1XvOhnrO3Z3r/lK1u5yIgapFKwLlzf9DJg/kSvlad0UtFb0e/d7EfmzB+llrXk0kgiZ/YeZMmMzVtOm9//ZevYf3fnmNZlC/efkK3m+63bW7jcIe+GLKEO3f+70D+Tfca37dyKsxKyNuSz/P//1kvdnXPWU3f/hcTykJIa7OiX1NjtszqWHx15LV4=
   </data>
  </layer>
  <layer id="3" name="props" width="16" height="9">
   <data encoding="base64" compression="zlib">
-   eJxjYGBgcATiQAbsIAhKeyOJ4VJLD+CKRSwIi9hgB0A3NyDz/ehsvw2VzAEACZsDdA==
+   eJxjYGBgUGaAgB4g5gfifgYE6EFi80NpkLwtkrgqA0MDA51ANwPDAnQxDRxqbWjrFIqABlqYdVNgFi8aP48IPaoU2IcMAJD2Brw=
   </data>
  </layer>
- <objectgroup id="2" name="doors">
-  <object id="1" name="up" gid="38" x="112" y="16" width="16" height="16"/>
-  <object id="3" name="left" gid="49" x="0" y="80" width="16" height="16"/>
-  <object id="4" name="down" gid="38" x="144" y="144" width="16" height="16"/>
-  <object id="5" name="right" gid="58" x="240" y="80" width="16" height="16"/>
+ <objectgroup color="#f6d32d" id="2" name="doors">
+  <object id="6" name="up" x="112" y="0" width="16" height="16"/>
+  <object id="7" name="right" x="240" y="64" width="16" height="16"/>
+  <object id="8" name="left" x="0" y="64" width="16" height="16"/>
+  <object id="9" name="down" x="112" y="128" width="16" height="16"/>
  </objectgroup>
 </map>
