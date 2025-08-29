@@ -1,0 +1,62 @@
+[versions]
+jvmToolchainVersion = "21"
+kotlinVersion = "2.2.10"
+gdxVersion = "1.13.5"
+ktxVersion = "1.13.1-rc1"
+gdxAiVersion = "1.8.2"
+fleksVersion = "2.12"
+grettyVersion = "3.1.7"
+gdxTeaVmVersion = "1.2.4"
+teaVmVersion = "0.12.2"
+
+[libraries]
+kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinVersion" }
+#gdx base
+gdx = { module = "com.badlogicgames.gdx:gdx", version.ref = "gdxVersion" }
+gdxBackendLwjgl3 = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3", version.ref = "gdxVersion" }
+gdxPlatform = { module = "com.badlogicgames.gdx:gdx-platform", version.ref = "gdxVersion" }
+# ktx base
+ktxActors = { module = "io.github.libktx:ktx-actors", version.ref = "ktxVersion" }
+ktxApp = { module = "io.github.libktx:ktx-app", version.ref = "ktxVersion" }
+ktxAssets = { module = "io.github.libktx:ktx-assets", version.ref = "ktxVersion" }
+ktxCollections = { module = "io.github.libktx:ktx-collections", version.ref = "ktxVersion" }
+ktxGraphics = { module = "io.github.libktx:ktx-graphics", version.ref = "ktxVersion" }
+ktxLog = { module = "io.github.libktx:ktx-log", version.ref = "ktxVersion" }
+ktxMath = { module = "io.github.libktx:ktx-math", version.ref = "ktxVersion" }
+ktxScene2d = { module = "io.github.libktx:ktx-scene2d", version.ref = "ktxVersion" }
+# box2d
+gdxBox2dPlatform = { module = "com.badlogicgames.gdx:gdx-box2d-platform", version.ref = "gdxVersion" }
+gdxBox2d = { module = "com.badlogicgames.gdx:gdx-box2d", version.ref = "gdxVersion" }
+ktxBox2d = { module = "io.github.libktx:ktx-box2d", version.ref = "ktxVersion" }
+# freetype
+gdxFreetypePlatform = { module = "com.badlogicgames.gdx:gdx-freetype-platform", version.ref = "gdxVersion" }
+gdxFreetype = { module = "com.badlogicgames.gdx:gdx-freetype", version.ref = "gdxVersion" }
+ktxFreetype = { module = "io.github.libktx:ktx-freetype", version.ref = "ktxVersion" }
+# ai
+gdxAi = { module = "com.badlogicgames.gdx:gdx-ai", version.ref = "gdxAiVersion" }
+ktxAi = { module = "io.github.libktx:ktx-ai", version.ref = "ktxVersion" }
+# other ktx extensions
+ktxPreferences = { module = "io.github.libktx:ktx-preferences", version.ref = "ktxVersion" }
+ktxI18n = { module = "io.github.libktx:ktx-i18n", version.ref = "ktxVersion" }
+# ecs
+fleks = { module = "io.github.quillraven.fleks:Fleks", version.ref = "fleksVersion" }
+# teavm
+gdxTeaVmBackend = { module = "com.github.xpenatan.gdx-teavm:backend-teavm", version.ref = "gdxTeaVmVersion" }
+teaVmClasslib = { module = "org.teavm:teavm-classlib", version.ref = "teaVmVersion" }
+teaVmCore = { module = "org.teavm:teavm-core", version.ref = "teaVmVersion" }
+teaVmJsoApis = { module = "org.teavm:teavm-jso-apis", version.ref = "teaVmVersion" }
+teaVmJsoImpl = { module = "org.teavm:teavm-jso-impl", version.ref = "teaVmVersion" }
+teaVmJso = { module = "org.teavm:teavm-jso", version.ref = "teaVmVersion" }
+teaVmTooling = { module = "org.teavm:teavm-tooling", version.ref = "teaVmVersion" }
+gdxBox2dGwt = { module = "com.badlogicgames.gdx:gdx-box2d-gwt", version.ref = "gdxVersion" }
+gdxTeaVmFreetype = { module = "com.github.xpenatan.gdx-teavm:gdx-freetype-teavm", version.ref = "gdxTeaVmVersion" }
+
+[bundles]
+ktxBaseBundle = ["ktxActors", "ktxApp", "ktxAssets", "ktxCollections", "ktxGraphics", "ktxLog", "ktxMath", "ktxScene2d"]
+box2dBundle = ["gdxBox2d", "ktxBox2d"]
+freetypeBundle = ["gdxFreetype", "ktxFreetype"]
+aiBundle = ["gdxAi", "ktxAi"]
+teaVmBundle = ["gdxTeaVmBackend", "teaVmClasslib", "teaVmCore", "teaVmJsoApis", "teaVmJsoImpl", "teaVmJso", "teaVmTooling"]
+
+[plugins]
+grettyGradlePlugin = { id = "org.gretty", version.ref = "grettyVersion" }

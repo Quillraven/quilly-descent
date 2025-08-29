@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-up" width="16" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="6">
+ <tileset firstgid="1" source="default.tsx"/>
+ <layer id="1" name="ground" width="16" height="9">
+  <data encoding="base64" compression="zlib">
+   eJx90MsKwjAQBdCI+EBtFFGxVSlYN7bqH/jYCV31/7/GO3ADlxFdHJLJZJJJyhDC4If+n5wpYA0ZdLCFHCLjJWw4r5ifM77DkPUWzzh6eznDrODNO62+dPt3MOH8AUfqZEwWMJVeUz66fbmLR3xPIfWV5A8cW+7Vt2gfJ/Yf5V/SWa38k9YmT97fY5yF7zeO+a+p/5c7w+4/wxVqaDi/kK7XoqEbfAAEWhm1
+  </data>
+ </layer>
+ <layer id="3" name="props" width="16" height="9">
+  <data encoding="base64" compression="zlib">
+   eJxjYGBgcATiQAbsIAhKeyOJ4VJLD+CKRSwIi9hgB0A3NyDz/ehsvw2VzAEACZsDdA==
+  </data>
+ </layer>
+ <objectgroup id="2" name="doors">
+  <object id="1" name="up" gid="38" x="112" y="16" width="16" height="16"/>
+  <object id="3" name="left" gid="49" x="0" y="80" width="16" height="16"/>
+  <object id="4" name="down" gid="38" x="144" y="144" width="16" height="16"/>
+  <object id="5" name="right" gid="58" x="240" y="80" width="16" height="16"/>
+ </objectgroup>
+</map>
