@@ -1,7 +1,6 @@
 package io.github.quillraven.descent.screen
 
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -9,10 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.Viewport
+import com.github.quillraven.fleks.World
+import com.github.quillraven.fleks.configureWorld
 import io.github.quillraven.descent.GdxGame
+import io.github.quillraven.descent.assets.AssetService
+import io.github.quillraven.descent.system.RenderSystem
 import ktx.app.KtxScreen
-import ktx.graphics.use
-import ktx.log.logger
 import ktx.scene2d.actors
 import ktx.scene2d.defaultStyle
 import ktx.scene2d.label
@@ -23,8 +24,22 @@ class GameScreen(
     private val gameViewport: Viewport = game.gameViewport,
     private val batch: Batch = game.batch,
     private val stage: Stage = game.stage,
+    private val assetService: AssetService = game.assetService,
 ) : KtxScreen {
-    private val texture = Texture("logo.png")
+
+    val world = initEcs()
+
+    fun initEcs(): World = configureWorld {
+        injectables {
+            add(batch)
+            add(gameViewport)
+            add(assetService)
+        }
+
+        systems {
+            add(RenderSystem())
+        }
+    }
 
     override fun show() {
         val skin = Skin().apply {
@@ -40,25 +55,21 @@ class GameScreen(
                 }
             }
         }
+
+        val tiledMap = assetService.get("maps/default-room-1.tmx")
+        world.system<RenderSystem>().setMap(tiledMap)
     }
 
     override fun render(delta: Float) {
-        gameViewport.apply()
-        batch.use(gameViewport.camera) {
-            it.draw(texture, 0f, 20f)
-        }
+        world.update(delta)
 
         stage.viewport.apply()
+        stage.batch.color = Color.WHITE
         stage.act(delta)
         stage.draw()
     }
 
     override fun dispose() {
-        texture.dispose()
-        log.info { "GameScreen resources dispoed" }
-    }
-
-    companion object {
-        private val log = logger<GameScreen>()
+        world.dispose()
     }
 }

@@ -1,24 +1,28 @@
 package io.github.quillraven.descent
 
+import com.badlogic.gdx.Application
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.viewport.FitViewport
-import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.Viewport
+import io.github.quillraven.descent.assets.AssetService
 import io.github.quillraven.descent.screen.GameScreen
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
-import ktx.log.logger
+import ktx.app.clearScreen
+import kotlin.math.min
 
 class GdxGame : KtxGame<KtxScreen>() {
     val batch: Batch by lazy { SpriteBatch() }
-    val gameViewport: Viewport = FitViewport(800f, 600f)
-    val uiViewport: Viewport = ScreenViewport()
+    val gameViewport: Viewport = ExtendViewport(16f, 9f, 21f, 10f)
+    val uiViewport: Viewport = ExtendViewport(854f, 480f)
     val stage: Stage by lazy { Stage(uiViewport, batch) }
+    val assetService: AssetService by lazy { AssetService() }
 
     override fun create() {
-        log.info { "Starting game" }
+        Gdx.app.logLevel = Application.LOG_DEBUG
         addScreen(GameScreen(this))
         setScreen<GameScreen>()
     }
@@ -29,15 +33,15 @@ class GdxGame : KtxGame<KtxScreen>() {
         super.resize(width, height)
     }
 
+    override fun render() {
+        clearScreen(0f, 0f, 0f, 1f)
+        currentScreen.render(min(Gdx.graphics.deltaTime, 1 / 30f))
+    }
+
     override fun dispose() {
         super.dispose()
         batch.dispose()
         stage.dispose()
-        log.info { "GdxGame resources disposed" }
+        assetService.dispose()
     }
-
-    companion object {
-        private val log = logger<GdxGame>()
-    }
-
 }
