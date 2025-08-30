@@ -10,12 +10,14 @@ import com.badlogic.gdx.utils.Disposable
 class AssetService(resolver: FileHandleResolver = InternalFileHandleResolver()) : Disposable {
     private val manager = AssetManager(resolver).apply {
         setLoader(TiledMap::class.java, TmxMapLoader(resolver))
+        setLoader(Dungeon::class.java, DungeonLoader(resolver))
     }
 
-    fun get(filePath: String): TiledMap {
-        manager.load(filePath, TiledMap::class.java)
+    fun get(difficulty: DungeonDifficulty): Dungeon {
+        val dungeonName = "Dungeon-${difficulty.name}"
+        manager.load(dungeonName, Dungeon::class.java, DungeonLoaderParameters(difficulty))
         manager.finishLoading()
-        return manager.get(filePath, TiledMap::class.java)
+        return manager.get(dungeonName, Dungeon::class.java)
     }
 
     override fun dispose() {

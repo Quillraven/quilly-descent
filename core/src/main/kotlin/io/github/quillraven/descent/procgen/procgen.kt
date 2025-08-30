@@ -23,74 +23,13 @@ data class IntVector2(val x: Int, val y: Int) {
     }
 }
 
-enum class RoomType {
-    START,
-    END,
-    MAIN,
-    OPTIONAL,
-}
-
-data class Room(
-    val index: Int,
-    val location: IntVector2,
-    val type: RoomType,
-)
-
-class Dungeon(
-    val dimension: IntVector2,
-    startLocation: IntVector2,
-) {
-    val width: Int
-        get() = dimension.x
-    val height: Int
-        get() = dimension.y
-    val rooms: Array<Array<Room?>> = Array(dimension.x) { x ->
-        Array(dimension.y) { y ->
-            if (x == startLocation.x && y == startLocation.y) {
-                Room(index = 0, location = IntVector2(x, y), type = RoomType.START)
-            } else {
-                null
-            }
-        }
-    }
-
-    operator fun plusAssign(room: Room) {
-        rooms[room.location.x][room.location.y] = room
-    }
-
-    fun clearRoom(location: IntVector2) {
-        rooms[location.x][location.y] = null
-    }
-
-    fun hasRoomAt(location: IntVector2): Boolean {
-        return rooms.getOrNull(location.x)?.getOrNull(location.y) != null
-    }
-
-    fun debug() {
-        val maxIdxSize = "${width * height}".length
-
-        for (y in height - 1 downTo 0) {
-            for (x in 0 until width) {
-                val room: Room? = rooms.getOrNull(x)?.getOrNull(y)
-                if (room == null) {
-                    print("[${" ".repeat(maxIdxSize + 1)}]")
-                    continue
-                }
-
-                print("[${room.type.name.first()}${room.index.toString().padEnd(maxIdxSize)}]")
-            }
-            println()
-        }
-    }
-}
-
 fun generateDungeon(
     dimension: IntVector2,
     criticalPathLength: Int,
     startLocations: List<IntVector2> = emptyList(),
     numBranches: Int = 0,
     branchLength: IntRange = 0..0,
-): Dungeon {
+): ProcDungeon {
     require(dimension.x > 0 && dimension.y > 0) { "'dimension' must be greater than 0." }
     require(criticalPathLength > 0 && criticalPathLength < dimension.x * dimension.y) { "'criticalPathLength' must be greater than 0 and smaller than the dungeon size." }
     require(startLocations.none { it.x !in 0..<dimension.x || it.y !in 0..<dimension.y }) { "'startLocations' must be within dungeon dimensions." }
@@ -107,7 +46,7 @@ fun generateDungeon(
     }
 
     // generate the dungeon
-    return Dungeon(dimension, startLocation).apply {
+    return ProcDungeon(dimension, startLocation).apply {
         val branchCandidates = mutableListOf<IntVector2>()
         if (!generateCriticalPath(this, startLocation, criticalPathLength, RoomType.MAIN, branchCandidates)) {
             error("Could not generate critical path")
@@ -117,7 +56,7 @@ fun generateDungeon(
 }
 
 fun generateCriticalPath(
-    dungeon: Dungeon,
+    dungeon: ProcDungeon,
     from: IntVector2,
     length: Int,
     roomType: RoomType,
@@ -144,7 +83,7 @@ fun generateCriticalPath(
         }
 
         // found a potential location for a room -> add it to the dungeon ...
-        dungeon += Room(index = length, location = nextLocation, type = realRoomType)
+        dungeon += ProcRoom(index = length, location = nextLocation, type = realRoomType)
         if (realRoomType == RoomType.MAIN) {
             // the last room (=end of dungeon) and other branch rooms are not branch candidates
             branchCandidates += nextLocation
@@ -166,7 +105,7 @@ fun generateCriticalPath(
 }
 
 fun generateBranches(
-    dungeon: Dungeon,
+    dungeon: ProcDungeon,
     numBranches: Int,
     branchLength: IntRange,
     branchCandidates: MutableList<IntVector2>
@@ -196,7 +135,6 @@ fun main() {
             numBranches = 3,
             branchLength = 1..4,
         )
-        dungeon.debug()
-        println()
+        println("$dungeon")
     }
 }

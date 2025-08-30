@@ -3,7 +3,6 @@ package io.github.quillraven.descent.system
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.quillraven.fleks.IntervalSystem
@@ -19,15 +18,6 @@ class RenderSystem(
     override fun onTick() {
         batch.color = Color.WHITE
         gameViewport.apply()
-
-        if (mapRenderer.map != null) {
-            mapRenderer.setView(camera)
-            mapRenderer.render()
-        }
-    }
-
-    fun setMap(map: TiledMap) {
-        mapRenderer.map = map
     }
 
     override fun onDispose() {

@@ -12,6 +12,8 @@ import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.configureWorld
 import io.github.quillraven.descent.GdxGame
 import io.github.quillraven.descent.assets.AssetService
+import io.github.quillraven.descent.assets.DungeonDifficulty
+import io.github.quillraven.descent.system.DungeonDebugRenderSystem
 import io.github.quillraven.descent.system.RenderSystem
 import ktx.app.KtxScreen
 import ktx.scene2d.actors
@@ -38,6 +40,7 @@ class GameScreen(
 
         systems {
             add(RenderSystem())
+            add(DungeonDebugRenderSystem())
         }
     }
 
@@ -56,8 +59,8 @@ class GameScreen(
             }
         }
 
-        val tiledMap = assetService.get("maps/default-room-1.tmx")
-        world.system<RenderSystem>().setMap(tiledMap)
+        val dungeon = assetService.get(DungeonDifficulty.HARD)
+        world.system<DungeonDebugRenderSystem>().setDungeon(dungeon)
     }
 
     override fun render(delta: Float) {

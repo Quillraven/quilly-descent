@@ -17,6 +17,7 @@ dependencies {
     api(libs.bundles.aiBundle)
     api(libs.ktxPreferences)
     api(libs.ktxI18n)
+    api(libs.ktxTiled)
     api(libs.fleks)
 
     testImplementation(kotlin("test"))

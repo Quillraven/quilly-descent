@@ -39,6 +39,7 @@ ktxAi = { module = "io.github.libktx:ktx-ai", version.ref = "ktxVersion" }
 # other ktx extensions
 ktxPreferences = { module = "io.github.libktx:ktx-preferences", version.ref = "ktxVersion" }
 ktxI18n = { module = "io.github.libktx:ktx-i18n", version.ref = "ktxVersion" }
+ktxTiled = { module = "io.github.libktx:ktx-tiled", version.ref = "ktxVersion" }
 # ecs
 fleks = { module = "io.github.quillraven.fleks:Fleks", version.ref = "fleksVersion" }
 # teavm
