@@ -32,10 +32,18 @@ class DungeonDebugRenderSystem(
         gameViewport.apply()
 
         val (origCamX, origCamY) = camera.position
+        val camX = origCamX - camera.viewportWidth / 2f
+        val camY = origCamY - camera.viewportHeight / 2f
+        val camW = camera.viewportWidth
+        val camH = camera.viewportHeight
+
         rooms.forEach { room ->
+            val (roomW, roomH) = room.size
             val (roomX, roomY) = room.location * room.size
 
-            if (!camera.frustum.boundsInFrustum(roomX, roomY, 0f, room.size.x, room.size.y, 0f)) {
+            // only render rooms within camera view, and only if camera.zoom == 1f (=default)
+            // otherwise, we are zoomed out and want to simply render the entire dungeon for easier debugging
+            if (camera.zoom == 1f && (roomX >= camX + camW || roomX + roomW <= camX || roomY >= camY + camH || roomY + roomH <= camY)) {
                 return@forEach
             }
 

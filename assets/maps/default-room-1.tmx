@@ -3,18 +3,13 @@
  <tileset firstgid="1" source="default.tsx"/>
  <layer id="1" name="ground" width="16" height="9">
   <data encoding="base64" compression="zlib">
-   eJxd0F0KglAQhmGjyD1U1k1L6IduXIFpIUQtoFIkaAdl4Y2r7jvwDgxdPMxxPHP8jpMoiq6SyQ1XvOhnrO3Z3r/lK1u5yIgapFKwLlzf9DJg/kSvlad0UtFb0e/d7EfmzB+llrXk0kgiZ/YeZMmMzVtOm9//ZevYf3fnmNZlC/efkK3m+63bW7jcIe+GLKEO3f+70D+Tfca37dyKsxKyNuSz/P//1kvdnXPWU3f/hcTykJIa7OiX1NjtszqWHx15LV4=
+   eJyV0MkKwjAUheFaq8Z5AieKtepGbX0Dh53ale//NJ7AHwhBFy4+TnKTm0ubRVFUl4SMpRHsE2ox3P2mdKUnA+nLhbyTN86urF0OZS+ZzKSS9x+WzHf9czGcpeSE2lPG1Drsbf9KavTbs0cww3jrNrlGON/1V8wy3HP9L+opbP8o6HfsG60f3z2VRTB/I7lnG8i/2PH/D1LiJEcpyNLLwktXO8sH2xUWwQ==
   </data>
  </layer>
  <layer id="3" name="props" width="16" height="9">
   <data encoding="base64" compression="zlib">
-   eJxjYGBgUGaAgB4g5gfifgYE6EFi80NpkLwtkrgqA0MDA51ANwPDAnQxDRxqbWjrFIqABlqYdVNgFi8aP48IPaoU2IcMAJD2Brw=
+   eJxjYGBgcGTABKlQuhdJzAdJzAlJ3A+LfloBVyxizTS2M59E9UZEqAG6uYEMp2AFNiSq98NjN7a0AAKg+PbFIg4AijQG4w==
   </data>
  </layer>
- <objectgroup color="#f6d32d" id="2" name="doors">
-  <object id="6" name="up" x="112" y="0" width="16" height="16"/>
-  <object id="7" name="right" x="240" y="64" width="16" height="16"/>
-  <object id="8" name="left" x="0" y="64" width="16" height="16"/>
-  <object id="9" name="down" x="112" y="128" width="16" height="16"/>
- </objectgroup>
+ <objectgroup color="#f6d32d" id="2" name="doors"/>
 </map>
