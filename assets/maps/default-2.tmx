@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-up" width="16" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="10">
+ <tileset firstgid="1" source="default.tsx"/>
+ <layer id="1" name="ground" width="16" height="9">
+  <data encoding="base64" compression="zlib">
+   eJyNz0sLglAQBeDrq4TojfZALMuNpm4KalXtEjf6/39N58IRhotBi48Zr547TquUaoUAPHDBAZu9x97muT4bGVltAlN4s75gBk/2fZ1DChbvc8Tc7g87zj9ACBvw+S5iXfGshivc4MFnnd9zfsjvP8YMX/Sp2C8emN/nG1gyG4t8ATlrxPzCyHfcQ98x/rH3GrbG/CMkcIcLdzwJyYAzd8qgpIo7ZvzXUtRC1Fx8/wWTzhgZ
+  </data>
+ </layer>
+ <layer id="3" name="props" width="16" height="9">
+  <data encoding="base64" compression="zlib">
+   eJxjYMAPepHYPkhiTnj0+BEw05WB4QAuOUcCerGBZjL0DARIRWID3dxALXNtkNiweHGlluFIwBeLGACENAY4
+  </data>
+ </layer>
+ <objectgroup color="#f6d32d" id="2" name="doors"/>
+</map>

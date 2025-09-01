@@ -14,7 +14,7 @@ import ktx.collections.GdxArray
 import ktx.log.logger
 import ktx.math.vec2
 
-class DungeonLoader(resolver: FileHandleResolver) :
+class DungeonLoader(private val resolver: FileHandleResolver) :
     AsynchronousAssetLoader<Dungeon, DungeonLoaderParameters>(resolver) {
 
     override fun loadAsync(
@@ -36,6 +36,7 @@ class DungeonLoader(resolver: FileHandleResolver) :
         val tiledMapLoader: TmxMapLoader? = manager.getLoader<TiledMap>() as TmxMapLoader?
         require(tiledMapLoader != null) { "DungeonLoader requires a loader for TiledMap assets." }
 
+        // 1) generate some random dungeon data using procedural generation
         log.debug { "Loading dungeon of difficulty ${parameter.difficulty.name}" }
         val dungeonData = generateDungeon(
             dimension = parameter.difficulty.dimension,
@@ -44,6 +45,11 @@ class DungeonLoader(resolver: FileHandleResolver) :
             branchLength = parameter.difficulty.branchLength,
         )
         log.debug { "\n$dungeonData" }
+
+        // 2) convert raw data to real game dungeon data using random Tiled maps for the dungeon
+        val mapsFolder = resolver.resolve("assets/maps")
+        val mapPool = mapsFolder.list { it.name.startsWith("${parameter.type.fileNameId}-") }
+        require(mapPool.isNotEmpty()) { "There are no maps for dungeon type '${parameter.type}'" }
 
         return Dungeon(
             rooms = Array(dungeonData.width) { x ->
@@ -54,7 +60,7 @@ class DungeonLoader(resolver: FileHandleResolver) :
                     Room(
                         location = vec2(roomX.toFloat(), roomY.toFloat()),
                         type = room.type,
-                        tiledMap = tiledMapLoader.load("maps/default-room-1.tmx"),
+                        tiledMap = tiledMapLoader.load(mapPool.random().path()),
                     )
                 }
             }
@@ -74,4 +80,7 @@ class DungeonLoader(resolver: FileHandleResolver) :
     }
 }
 
-data class DungeonLoaderParameters(val difficulty: DungeonDifficulty) : AssetLoaderParameters<Dungeon>()
+data class DungeonLoaderParameters(
+    val difficulty: DungeonDifficulty,
+    val type: DungeonType,
+) : AssetLoaderParameters<Dungeon>()

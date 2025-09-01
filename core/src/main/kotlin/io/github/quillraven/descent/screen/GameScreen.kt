@@ -13,6 +13,7 @@ import com.github.quillraven.fleks.configureWorld
 import io.github.quillraven.descent.GdxGame
 import io.github.quillraven.descent.assets.AssetService
 import io.github.quillraven.descent.assets.DungeonDifficulty
+import io.github.quillraven.descent.assets.DungeonType
 import io.github.quillraven.descent.system.DungeonDebugRenderSystem
 import io.github.quillraven.descent.system.RenderSystem
 import ktx.app.KtxScreen
@@ -59,7 +60,7 @@ class GameScreen(
             }
         }
 
-        val dungeon = assetService.get(DungeonDifficulty.HARD)
+        val dungeon = assetService.get(DungeonDifficulty.HARD, DungeonType.DEFAULT)
         world.system<DungeonDebugRenderSystem>().setDungeon(dungeon)
     }
 

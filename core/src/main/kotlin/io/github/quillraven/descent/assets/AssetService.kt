@@ -13,9 +13,9 @@ class AssetService(resolver: FileHandleResolver = InternalFileHandleResolver()) 
         setLoader(Dungeon::class.java, DungeonLoader(resolver))
     }
 
-    fun get(difficulty: DungeonDifficulty): Dungeon {
+    fun get(difficulty: DungeonDifficulty, type: DungeonType): Dungeon {
         val dungeonName = "Dungeon-${difficulty.name}"
-        manager.load(dungeonName, Dungeon::class.java, DungeonLoaderParameters(difficulty))
+        manager.load(dungeonName, Dungeon::class.java, DungeonLoaderParameters(difficulty, type))
         manager.finishLoading()
         return manager.get(dungeonName, Dungeon::class.java)
     }
