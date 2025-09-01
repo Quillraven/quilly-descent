@@ -12,6 +12,7 @@ class Room(
     val location: Vector2,
     val type: RoomType,
     val tiledMap: TiledMap,
+    val doorLocations: List<Vector2>,
     val size: Vector2 = vec2(tiledMap.width.toFloat(), tiledMap.height.toFloat())
 ) : Disposable {
     override fun dispose() {

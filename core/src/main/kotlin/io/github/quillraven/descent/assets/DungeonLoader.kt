@@ -61,6 +61,7 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
                         location = vec2(roomX.toFloat(), roomY.toFloat()),
                         type = room.type,
                         tiledMap = tiledMapLoader.load(mapPool.random().path()),
+                        doorLocations = room.doorDirections.map { vec2(it.x.toFloat(), it.y.toFloat()) }
                     )
                 }
             }

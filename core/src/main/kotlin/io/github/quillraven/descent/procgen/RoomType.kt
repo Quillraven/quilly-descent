@@ -4,5 +4,8 @@ enum class RoomType {
     START,
     END,
     MAIN,
-    OPTIONAL,
+    OPTIONAL;
+
+    val isNotStartOrEnd: Boolean
+        get() = this != START && this != END
 }
