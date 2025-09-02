@@ -22,6 +22,10 @@ data class ProcRoom(
         doors.add(door)
     }
 
+    fun removeDoor(door: IntVector2) {
+        doors.remove(door)
+    }
+
     fun hasDoor(direction: IntVector2): Boolean {
         return direction in doors
     }

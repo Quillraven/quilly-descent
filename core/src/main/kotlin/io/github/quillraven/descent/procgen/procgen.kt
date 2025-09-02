@@ -1,6 +1,5 @@
 package io.github.quillraven.descent.procgen
 
-import kotlin.math.max
 import kotlin.random.Random
 
 data class IntVector2(val x: Int, val y: Int) {
@@ -61,81 +60,40 @@ fun generateDungeon(
             error("Could not generate critical path")
         }
         generateBranches(this, numBranches, branchLength, branchCandidates)
-        generateDoors(this)
+        generateExtraDoors(this)
     }
 }
 
-fun generateDoors(dungeon: ProcDungeon) {
-    val allRooms = dungeon.rooms.flatten().filterNotNull()
-    generateStartRoomDoors(dungeon, allRooms)
-    generateEndRoomDoor(dungeon, allRooms)
+fun generateExtraDoors(dungeon: ProcDungeon) {
+    val allMainAndOptionalRooms = dungeon.rooms
+        .flatten()
+        .filterNotNull()
+        .filter { it.type.isNotStartOrEnd }
 
-    val remainingRooms = allRooms.filter { it.type.isNotStartOrEnd }
-    remainingRooms.forEach { room ->
-        // if a room already has more than one door, then it was already processed
-        if (room.numDoors > 1) return@forEach
+    allMainAndOptionalRooms.forEach { room ->
+        // if a room already has doors in all directions, then ignore it
+        if (room.numDoors == 4) return@forEach
 
-        // ignore START and END room because they are handled separately before
-        val surroundingRooms = dungeon.surroundingRooms(room)
+        val extraRoomCandidates = dungeon.surroundingRooms(room)
+            // START and END rooms are not allowed for additional door connections
             .filterValues { it.type.isNotStartOrEnd }
+            // also, ignore rooms that are already connected to the room
             .filterKeys { doorDirection -> doorDirection !in room }
-        if (surroundingRooms.isEmpty()) return@forEach
-        var numDoors = (1..surroundingRooms.size).random()
-        val minNumDoors = when {
-            room.type == RoomType.OPTIONAL && room.isLastPathElement -> 1 - room.numDoors
-            else -> 2 - room.numDoors
-        }
-        numDoors = max(minNumDoors, numDoors)
 
-        surroundingRooms.entries.shuffled().take(numDoors).forEach { (direction, surroundingRoom) ->
-            room.addDoor(direction)
-            surroundingRoom.addDoor(IntVector2.oppositeDirection(direction))
-        }
+        // if there are no candidates -> go to the next room
+        if (extraRoomCandidates.isEmpty()) return@forEach
+        // don't add doors all the time (X% chance to ignore it)
+        if(Random.nextFloat() < 0.75f) return@forEach
+
+        val numDoors = (0..extraRoomCandidates.size).random()
+        extraRoomCandidates.entries
+            .shuffled()
+            .take(numDoors)
+            .forEach { (direction, surroundingRoom) ->
+                room.addDoor(direction)
+                surroundingRoom.addDoor(IntVector2.oppositeDirection(direction))
+            }
     }
-}
-
-private fun generateStartRoomDoors(
-    dungeon: ProcDungeon,
-    allRooms: List<ProcRoom>
-) {
-    val startRoom = allRooms.single { it.type == RoomType.START }
-    val surroundingRooms = dungeon.surroundingRooms(startRoom)
-    val mainRooms = surroundingRooms.filterValues { it.type == RoomType.MAIN }
-    if (mainRooms.isEmpty()) {
-        // should only be possible if a critical path is not long enough and END is directly next to START
-        val endRoom = surroundingRooms.filterValues { it.type == RoomType.END }
-        require(endRoom.size == 1) { "There is no END room next to the START room" }
-        val doorDirection = endRoom.keys.single()
-        startRoom.addDoor(doorDirection)
-        endRoom.values.single().addDoor(IntVector2.oppositeDirection(doorDirection))
-        return
-    }
-
-    val numDoors = (1..mainRooms.size).random()
-    mainRooms.entries.shuffled().take(numDoors).forEach { (direction, room) ->
-        startRoom.addDoor(direction)
-        room.addDoor(IntVector2.oppositeDirection(direction))
-    }
-}
-
-private fun generateEndRoomDoor(
-    dungeon: ProcDungeon,
-    allRooms: List<ProcRoom>
-) {
-    val endRoom = allRooms.single { it.type == RoomType.END }
-    // if END room already has a door, then it was the special case handled in generateStartRoomDoors,
-    // which means that there is only a short critical path directly from START to END
-    // -> nothing to do
-    if (endRoom.hasDoors()) return
-
-    val surroundingRooms = dungeon.surroundingRooms(endRoom)
-    val mainRooms = surroundingRooms.filterValues { it.type == RoomType.MAIN }
-    require(mainRooms.isNotEmpty()) { "There is no MAIN room next to the END room" }
-
-    // only one door to the final room of a level
-    val (direction, room) = mainRooms.entries.shuffled().random()
-    endRoom.addDoor(direction)
-    room.addDoor(IntVector2.oppositeDirection(direction))
 }
 
 fun generateCriticalPath(
@@ -172,6 +130,10 @@ fun generateCriticalPath(
             branchCandidates += nextLocation
         }
 
+        // ... add doors ...
+        dungeon.roomAt(from.x, from.y)?.addDoor(direction)
+        dungeon.roomAt(nextLocation.x, nextLocation.y)?.addDoor(IntVector2.oppositeDirection(direction))
+
         // ... and continue the generation of the next room
         if (generateCriticalPath(dungeon, from = nextLocation, length - 1, roomType, branchCandidates)) {
             return true
@@ -180,6 +142,7 @@ fun generateCriticalPath(
         // critical path creation failed at some point -> remove room and try a different direction (go clockwise)
         dungeon.clearRoom(nextLocation)
         branchCandidates -= nextLocation
+        dungeon.roomAt(from.x, from.y)?.removeDoor(direction)
         direction = IntVector2(-direction.y, direction.x)
     }
 

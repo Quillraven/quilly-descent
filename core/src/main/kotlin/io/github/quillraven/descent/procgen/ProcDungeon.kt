@@ -64,27 +64,27 @@ class ProcDungeon(
                         // Center position (1,1) - show room type
                         posX == 1 && posY == 1 -> append(room.type.name.first())
 
-                        // Corners (0,0), (0,2), (2,0), (2,2) - always dots
+                        // Corners (0,0), (0,2), (2,0), (2,2)
                         (posX == 0 || posX == 2) && (posY == 0 || posY == 2) -> append(" ")
 
                         // Top (1,2) - check for UP door
                         posX == 1 && posY == 2 -> {
-                            if (room.hasDoor(IntVector2.UP)) append("+") else append(" ")
+                            if (room.hasDoor(IntVector2.UP)) append(".") else append(" ")
                         }
 
                         // Bottom (1,0) - check for DOWN door
                         posX == 1 && posY == 0 -> {
-                            if (room.hasDoor(IntVector2.DOWN)) append("+") else append(" ")
+                            if (room.hasDoor(IntVector2.DOWN)) append(".") else append(" ")
                         }
 
                         // Left (0,1) - check for LEFT door
                         posX == 0 && posY == 1 -> {
-                            if (room.hasDoor(IntVector2.LEFT)) append("+") else append(" ")
+                            if (room.hasDoor(IntVector2.LEFT)) append(".") else append(" ")
                         }
 
                         // Right (2,1) - check for RIGHT door
                         posX == 2 && posY == 1 -> {
-                            if (room.hasDoor(IntVector2.RIGHT)) append("+") else append(" ")
+                            if (room.hasDoor(IntVector2.RIGHT)) append(".") else append(" ")
                         }
 
                         else -> append(" ")
