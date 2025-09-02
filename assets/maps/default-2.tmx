@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-up" width="16" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="10">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-up" width="16" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="19">
  <tileset firstgid="1" source="default.tsx"/>
  <layer id="1" name="ground" width="16" height="9">
   <data encoding="base64" compression="zlib">
@@ -11,5 +11,15 @@
    eJxjYMAPepHYPkhiTnj0+BEw05WB4QAuOUcCerGBZjL0DARIRWID3dxALXNtkNiweHGlluFIwBeLGACENAY4
   </data>
  </layer>
- <objectgroup color="#f6d32d" id="2" name="doors"/>
+ <objectgroup color="#f6d32d" id="2" name="doors">
+  <object id="10" name="up" x="80" y="0" width="48" height="16"/>
+  <object id="11" name="up" x="144" y="0" width="32" height="16"/>
+  <object id="12" name="up" x="192" y="0" width="16" height="16"/>
+  <object id="13" name="left" x="0" y="64" width="16" height="64"/>
+  <object id="14" name="down" x="16" y="128" width="32" height="16"/>
+  <object id="15" name="down" x="96" y="128" width="80" height="16"/>
+  <object id="16" name="down" x="192" y="128" width="45.8358" height="16"/>
+  <object id="17" name="right" x="240" y="16" width="16" height="64"/>
+  <object id="18" name="right" x="240" y="96" width="16" height="32"/>
+ </objectgroup>
 </map>

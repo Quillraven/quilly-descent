@@ -83,7 +83,7 @@ fun generateExtraDoors(dungeon: ProcDungeon) {
         // if there are no candidates -> go to the next room
         if (extraRoomCandidates.isEmpty()) return@forEach
         // don't add doors all the time (X% chance to ignore it)
-        if(Random.nextFloat() < 0.75f) return@forEach
+        if (Random.nextFloat() < 0.75f) return@forEach
 
         val numDoors = (0..extraRoomCandidates.size).random()
         extraRoomCandidates.entries

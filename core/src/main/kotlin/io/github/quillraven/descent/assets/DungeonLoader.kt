@@ -7,12 +7,23 @@ import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader
 import com.badlogic.gdx.assets.loaders.FileHandleResolver
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
+import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.math.Vector2
+import io.github.quillraven.descent.procgen.IntVector2
 import io.github.quillraven.descent.procgen.generateDungeon
+import ktx.app.gdxError
 import ktx.assets.getLoader
 import ktx.collections.GdxArray
 import ktx.log.logger
 import ktx.math.vec2
+import ktx.tiled.forEachLayer
+import ktx.tiled.layer
+import ktx.tiled.shape
+import ktx.tiled.tileHeight
+import ktx.tiled.tileWidth
 
 class DungeonLoader(private val resolver: FileHandleResolver) :
     AsynchronousAssetLoader<Dungeon, DungeonLoaderParameters>(resolver) {
@@ -56,16 +67,54 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
                 Array(dungeonData.height) { y ->
                     val room = dungeonData.rooms[x][y] ?: return@Array null
                     val (roomX, roomY) = room.location
+                    val tiledMapPath = mapPool.random().path()
+                    val tiledMap = tiledMapLoader.load(tiledMapPath)
+                    val doorLocations = updateDoorTiles(tiledMapPath, tiledMap, room.doorDirections)
 
                     Room(
                         location = vec2(roomX.toFloat(), roomY.toFloat()),
                         type = room.type,
-                        tiledMap = tiledMapLoader.load(mapPool.random().path()),
-                        doorLocations = room.doorDirections.map { vec2(it.x.toFloat(), it.y.toFloat()) }
+                        tiledMap = tiledMap,
+                        doorLocations = doorLocations
                     )
                 }
             }
         )
+    }
+
+    private fun updateDoorTiles(
+        tiledMapPath: String,
+        tiledMap: TiledMap,
+        doorDirections: Set<IntVector2>
+    ): List<Vector2> {
+        val doorLayer = tiledMap.layer("doors")
+        return doorDirections.map { direction ->
+            val doorObjects = when (direction) {
+                IntVector2.UP -> doorLayer.objects.filter { it.name == "up" }
+                IntVector2.DOWN -> doorLayer.objects.filter { it.name == "down" }
+                IntVector2.RIGHT -> doorLayer.objects.filter { it.name == "right" }
+                IntVector2.LEFT -> doorLayer.objects.filter { it.name == "left" }
+                else -> gdxError("Invalid direction for doors: $direction")
+            }
+
+            if (doorObjects.isEmpty()) {
+                gdxError("Missing door area for direction $direction in map $tiledMapPath")
+            }
+
+            // remove any existing tiles on the door location
+            val doorObject = doorObjects.random()
+            val doorSpawnArea = doorObject.shape as Rectangle
+            val spawnPointX = MathUtils.random(doorSpawnArea.x + 1f, doorSpawnArea.x + doorSpawnArea.width - 1f)
+            val spawnPointY = MathUtils.random(doorSpawnArea.y + 1f, doorSpawnArea.y + doorSpawnArea.height - 1f)
+            val cellIndexX = spawnPointX / tiledMap.tileWidth
+            val cellIndexY = spawnPointY / tiledMap.tileHeight
+            tiledMap.forEachLayer<TiledMapTileLayer> { layer ->
+                layer.setCell(cellIndexX.toInt(), cellIndexY.toInt(), null)
+            }
+
+            // return door location
+            vec2(cellIndexX, cellIndexY)
+        }
     }
 
     override fun getDependencies(

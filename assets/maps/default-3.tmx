@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-up" width="16" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="23">
+ <tileset firstgid="1" source="default.tsx"/>
+ <layer id="1" name="ground" width="16" height="9">
+  <data encoding="base64" compression="zlib">
+   eJx90U0LgkAQBuDVUoJK+iArDC3ron1cOtSpuhVd9P//mt6Bd2EYpMODy87Mzgw2zrkCIqMPPQh5jng+QGMsYAQJjeHF75N3D55jUxuwTwpXuEP7h60vWLvkOzLrhrkzGMCHd2uVE/KtgPWS/za9StgpJXfJ+Vas+vv6L0wZv8GJztwtVbNMTL2YQ6biXbuuTP+tms/bd/yrocr18YqziZrfI88XU19xF58n8R96HBat
+  </data>
+ </layer>
+ <layer id="3" name="props" width="16" height="9">
+  <data encoding="base64" compression="zlib">
+   eJxjYEAAHwZM0IvEdsQiTwowIkKNBRnmNkPpVBL0OOEQ9yPDfnLsA7q5AYlNFeCKxK4kQS0MkBO/AO7SBgk=
+  </data>
+ </layer>
+ <objectgroup color="#f6d32d" id="2" name="doors">
+  <object id="10" name="up" x="64" y="0" width="64" height="16"/>
+  <object id="11" name="up" x="32" y="0" width="16" height="16"/>
+  <object id="12" name="up" x="144" y="0" width="32" height="16"/>
+  <object id="13" name="left" x="0" y="64" width="16" height="32"/>
+  <object id="14" name="left" x="0" y="112" width="16" height="16"/>
+  <object id="15" name="down" x="16" y="128" width="32" height="16"/>
+  <object id="16" name="down" x="64" y="128" width="32" height="16"/>
+  <object id="17" name="down" x="128" y="80" width="32" height="16"/>
+  <object id="18" name="down" x="192" y="128" width="48" height="16"/>
+  <object id="19" name="right" x="240" y="96" width="16" height="32"/>
+  <object id="20" name="right" x="240" y="64" width="16" height="16"/>
+  <object id="21" name="right" x="192" y="16" width="16" height="32"/>
+  <object id="22" name="left" x="16" y="16" width="16" height="16"/>
+ </objectgroup>
+</map>
