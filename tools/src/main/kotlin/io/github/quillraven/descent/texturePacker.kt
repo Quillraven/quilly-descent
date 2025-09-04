@@ -4,7 +4,7 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker
 
 fun main() {
     val toPack = listOf(
-        Triple("../assets_raw/tilesets/default", "../assets/maps", "default")
+        Triple("../assets_raw/objects", "../assets/graphics", "game_objects")
     )
 
     toPack.forEach { (inputDir, outputDir, atlasName) ->

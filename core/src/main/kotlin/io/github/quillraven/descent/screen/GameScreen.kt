@@ -1,26 +1,22 @@
 package io.github.quillraven.descent.screen
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.configureWorld
 import io.github.quillraven.descent.GdxGame
 import io.github.quillraven.descent.assets.AssetService
+import io.github.quillraven.descent.assets.AtlasAsset
 import io.github.quillraven.descent.assets.DungeonDifficulty
 import io.github.quillraven.descent.assets.DungeonType
-import io.github.quillraven.descent.system.DungeonDebugRenderSystem
+import io.github.quillraven.descent.system.CameraSystem
+import io.github.quillraven.descent.system.DoorSystem
 import io.github.quillraven.descent.system.RenderSystem
+import io.github.quillraven.descent.tiled.TiledService
 import ktx.app.KtxScreen
-import ktx.scene2d.actors
-import ktx.scene2d.defaultStyle
-import ktx.scene2d.label
-import ktx.scene2d.table
 
 class GameScreen(
     game: GdxGame,
@@ -30,38 +26,35 @@ class GameScreen(
     private val assetService: AssetService = game.assetService,
 ) : KtxScreen {
 
-    val world = initEcs()
+    private val tiledService = TiledService()
+    private val world = initEcs()
 
     fun initEcs(): World = configureWorld {
         injectables {
             add(batch)
             add(gameViewport)
+            add(gameViewport.camera as OrthographicCamera)
             add(assetService)
+            add(AtlasAsset.GAME_OBJECTS.name, assetService.get(AtlasAsset.GAME_OBJECTS))
         }
 
         systems {
+            add(DoorSystem())
+            add(CameraSystem())
             add(RenderSystem())
-            add(DungeonDebugRenderSystem())
+//            add(DungeonDebugRenderSystem())
         }
     }
 
     override fun show() {
-        val skin = Skin().apply {
-            add("default", Label.LabelStyle(BitmapFont(), Color.WHITE))
-        }
-        stage.actors {
-            table(skin) {
-                setFillParent(true)
-                bottom()
-                label("Have fun!", defaultStyle, skin) {
-                    this.setAlignment(Align.center)
-                    it.growX()
-                }
-            }
-        }
-
         val dungeon = assetService.get(DungeonDifficulty.HARD, DungeonType.DEFAULT)
-        world.system<DungeonDebugRenderSystem>().setDungeon(dungeon)
+//        world.system<DungeonDebugRenderSystem>().setDungeon(dungeon)
+        tiledService.onRoomChange = { room, tiledMap ->
+            world.system<DoorSystem>().setRoom(room, tiledMap)
+            world.system<CameraSystem>().resetCamera()
+            world.system<RenderSystem>().setMap(tiledMap)
+        }
+        tiledService.setActiveDungeonRoom(dungeon.activeRoom)
     }
 
     override fun render(delta: Float) {

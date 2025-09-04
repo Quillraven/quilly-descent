@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import io.github.quillraven.descent.assets.AssetService
-import io.github.quillraven.descent.screen.GameScreen
+import io.github.quillraven.descent.screen.LoadingScreen
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
@@ -23,8 +23,8 @@ class GdxGame : KtxGame<KtxScreen>() {
 
     override fun create() {
         Gdx.app.logLevel = Application.LOG_DEBUG
-        addScreen(GameScreen(this))
-        setScreen<GameScreen>()
+        addScreen(LoadingScreen(this))
+        setScreen<LoadingScreen>()
     }
 
     override fun resize(width: Int, height: Int) {
@@ -43,5 +43,9 @@ class GdxGame : KtxGame<KtxScreen>() {
         batch.dispose()
         stage.dispose()
         assetService.dispose()
+    }
+
+    companion object {
+        const val UNIT_SCALE = 1 / 16f
     }
 }

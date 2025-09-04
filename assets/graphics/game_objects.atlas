@@ -1,0 +1,118 @@
+
+game_objects.png
+size: 64, 128
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Tile
+  rotate: false
+  xy: 1, 109
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 80
+Tile
+  rotate: false
+  xy: 1, 91
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 81
+Tile
+  rotate: false
+  xy: 19, 109
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 82
+Tile
+  rotate: false
+  xy: 1, 73
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 83
+Tile
+  rotate: false
+  xy: 19, 91
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 84
+Tile
+  rotate: false
+  xy: 37, 109
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 85
+Tile
+  rotate: false
+  xy: 1, 55
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 86
+Tile
+  rotate: false
+  xy: 19, 73
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 87
+Tile
+  rotate: false
+  xy: 37, 91
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 88
+Tile
+  rotate: false
+  xy: 1, 37
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 89
+Tile
+  rotate: false
+  xy: 19, 55
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 97
+Tile
+  rotate: false
+  xy: 37, 73
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 98
+Tile
+  rotate: false
+  xy: 1, 19
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 99
+doors/master_top
+  rotate: false
+  xy: 19, 37
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+doors/normal_left
+  rotate: false
+  xy: 37, 55
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+doors/normal_top
+  rotate: false
+  xy: 1, 1
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

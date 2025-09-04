@@ -20,6 +20,12 @@ class AssetService(resolver: FileHandleResolver = InternalFileHandleResolver()) 
         return manager.get(dungeonName, Dungeon::class.java)
     }
 
+    fun <T> get(asset: Asset<T>): T = manager.get<T>(asset.descriptor)
+
+    fun <T> queue(asset: Asset<T>) = manager.load(asset.descriptor)
+
+    fun update(): Boolean = manager.update()
+
     override fun dispose() {
         manager.dispose()
     }
