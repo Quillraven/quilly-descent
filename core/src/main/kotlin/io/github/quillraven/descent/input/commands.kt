@@ -1,0 +1,5 @@
+package io.github.quillraven.descent.input
+
+sealed interface Command
+
+class MoveCommand(val targetX: Int, val targetY: Int) : Command

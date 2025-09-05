@@ -2,6 +2,7 @@ package io.github.quillraven.descent
 
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -20,9 +21,13 @@ class GdxGame : KtxGame<KtxScreen>() {
     val uiViewport: Viewport = ExtendViewport(854f, 480f)
     val stage: Stage by lazy { Stage(uiViewport, batch) }
     val assetService: AssetService by lazy { AssetService() }
+    val inputProcessor by lazy { InputMultiplexer() }
 
     override fun create() {
         Gdx.app.logLevel = Application.LOG_DEBUG
+
+        Gdx.input.inputProcessor = inputProcessor
+
         addScreen(LoadingScreen(this))
         setScreen<LoadingScreen>()
     }

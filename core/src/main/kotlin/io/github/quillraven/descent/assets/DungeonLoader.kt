@@ -22,6 +22,8 @@ import ktx.tiled.layer
 import ktx.tiled.shape
 import ktx.tiled.tileHeight
 import ktx.tiled.tileWidth
+import ktx.tiled.x
+import ktx.tiled.y
 
 class DungeonLoader(private val resolver: FileHandleResolver) :
     AsynchronousAssetLoader<Dungeon, DungeonLoaderParameters>(resolver) {
@@ -68,12 +70,15 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
                     val tiledMapPath = mapPool.random().path()
                     val tiledMap = tiledMapLoader.load(tiledMapPath)
                     val doorLocations = updateDoorTiles(tiledMapPath, tiledMap, room.doorDirections)
+                    val spawnObjects = tiledMap.layer("spawns").objects
+                    val playerSpawn = spawnObjects.single { it.name == "player" }
 
                     Room(
                         location = vec2(roomX.toFloat(), roomY.toFloat()),
                         type = room.type,
                         tiledMap = tiledMap,
-                        doorLocations = doorLocations
+                        doorLocations = doorLocations,
+                        playerSpawn = vec2(playerSpawn.x * parameter.unitScale, playerSpawn.y * parameter.unitScale)
                     )
                 }
             }
@@ -128,4 +133,5 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
 data class DungeonLoaderParameters(
     val difficulty: DungeonDifficulty,
     val type: DungeonType,
+    val unitScale: Float = 1f,
 ) : AssetLoaderParameters<Dungeon>()

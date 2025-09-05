@@ -15,10 +15,10 @@ data class Transform(
     override fun compareTo(other: Transform): Int = when {
         z < other.z -> -1
         z > other.z -> 1
-        position.y < other.position.y -> -1
-        position.y > other.position.y -> 1
-        position.x < other.position.x -> -1
-        position.x > other.position.x -> 1
+        position.y < other.position.y -> 1
+        position.y > other.position.y -> -1
+        position.x < other.position.x -> 1
+        position.x > other.position.x -> -1
         else -> 0
     }
 

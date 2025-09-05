@@ -48,6 +48,7 @@ class DoorSystem(
                     position = vec2(cellX, cellY),
                     size = vec2(1f, 1f),
                     rotationDegrees = rotation,
+                    z = -1,
                 )
                 e += Graphic(region)
                 e += Door()

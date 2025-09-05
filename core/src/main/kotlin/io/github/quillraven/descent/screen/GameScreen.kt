@@ -1,5 +1,6 @@
 package io.github.quillraven.descent.screen
 
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -12,8 +13,13 @@ import io.github.quillraven.descent.assets.AssetService
 import io.github.quillraven.descent.assets.AtlasAsset
 import io.github.quillraven.descent.assets.DungeonDifficulty
 import io.github.quillraven.descent.assets.DungeonType
+import io.github.quillraven.descent.component.Input
+import io.github.quillraven.descent.input.KeyboardMouseInputProcessor
 import io.github.quillraven.descent.system.CameraSystem
 import io.github.quillraven.descent.system.DoorSystem
+import io.github.quillraven.descent.system.InputSystem
+import io.github.quillraven.descent.system.MoveSystem
+import io.github.quillraven.descent.system.PlayerSpawnSystem
 import io.github.quillraven.descent.system.RenderSystem
 import io.github.quillraven.descent.tiled.TiledService
 import ktx.app.KtxScreen
@@ -24,6 +30,7 @@ class GameScreen(
     private val batch: Batch = game.batch,
     private val stage: Stage = game.stage,
     private val assetService: AssetService = game.assetService,
+    private val inputProcessor: InputMultiplexer = game.inputProcessor,
 ) : KtxScreen {
 
     private val tiledService = TiledService()
@@ -39,6 +46,9 @@ class GameScreen(
         }
 
         systems {
+            add(InputSystem())
+            add(PlayerSpawnSystem())
+            add(MoveSystem())
             add(DoorSystem())
             add(CameraSystem())
             add(RenderSystem())
@@ -47,12 +57,16 @@ class GameScreen(
     }
 
     override fun show() {
+        inputProcessor.clear()
+        inputProcessor.setProcessors(KeyboardMouseInputProcessor(world.family { all(Input) }))
+
         val dungeon = assetService.get(DungeonDifficulty.HARD, DungeonType.DEFAULT)
 //        world.system<DungeonDebugRenderSystem>().setDungeon(dungeon)
         tiledService.onRoomChange = { room, tiledMap ->
             world.system<DoorSystem>().setRoom(room, tiledMap)
             world.system<CameraSystem>().resetCamera()
             world.system<RenderSystem>().setMap(tiledMap)
+            world.system<PlayerSpawnSystem>().setRoom(room)
         }
         tiledService.setActiveDungeonRoom(dungeon.activeRoom)
     }
