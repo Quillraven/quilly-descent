@@ -35,4 +35,8 @@ class Room(
     override fun dispose() {
         tiledMap.dispose()
     }
+
+    companion object {
+        val NO_ROOM = Room(vec2(-1f, -1f), RoomType.OPTIONAL, TiledMap(), emptyMap(), vec2(-1f, -1f), vec2(-1f - 1f))
+    }
 }

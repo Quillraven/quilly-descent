@@ -1,7 +1,7 @@
 [versions]
 jvmToolchainVersion = "21"
 kotlinVersion = "2.2.10"
-gdxVersion = "1.13.5"
+gdxVersion = "1.13.6-SNAPSHOT"
 ktxVersion = "1.13.1-rc1"
 gdxAiVersion = "1.8.2"
 fleksVersion = "2.12"

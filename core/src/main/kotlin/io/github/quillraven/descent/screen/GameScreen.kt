@@ -16,6 +16,7 @@ import io.github.quillraven.descent.assets.DungeonType
 import io.github.quillraven.descent.component.Input
 import io.github.quillraven.descent.input.KeyboardMouseInputProcessor
 import io.github.quillraven.descent.system.CameraSystem
+import io.github.quillraven.descent.system.DebugSystem
 import io.github.quillraven.descent.system.DoorSystem
 import io.github.quillraven.descent.system.InputSystem
 import io.github.quillraven.descent.system.MoveSystem
@@ -43,6 +44,7 @@ class GameScreen(
             add(gameViewport.camera as OrthographicCamera)
             add(assetService)
             add(AtlasAsset.GAME_OBJECTS.name, assetService.get(AtlasAsset.GAME_OBJECTS))
+            add(tiledService)
         }
 
         systems {
@@ -52,6 +54,7 @@ class GameScreen(
             add(DoorSystem())
             add(CameraSystem())
             add(RenderSystem())
+            add(DebugSystem())
 //            add(DungeonDebugRenderSystem())
         }
     }
@@ -68,7 +71,7 @@ class GameScreen(
             world.system<RenderSystem>().setMap(tiledMap)
             world.system<PlayerSpawnSystem>().setRoom(room)
         }
-        tiledService.setActiveDungeonRoom(dungeon.activeRoom)
+        tiledService.setActiveDungeonRoom(dungeon, dungeon.startRoom)
     }
 
     override fun render(delta: Float) {

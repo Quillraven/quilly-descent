@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
+import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile
 import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.quillraven.fleks.Entity
@@ -31,10 +32,10 @@ class RenderSystem(
         batch.color = Color.WHITE
         gameViewport.apply()
 
+        AnimatedTiledMapTile.updateAnimationBaseTime()
         mapRenderer.setView(camera)
-        mapRenderer.render()
-
         batch.use(camera) {
+            mapRenderer.map.layers.forEach(mapRenderer::renderMapLayer)
             super.onTick()
         }
         batch.color = Color.WHITE

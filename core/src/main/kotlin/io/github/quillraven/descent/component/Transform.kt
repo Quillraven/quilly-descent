@@ -12,6 +12,15 @@ data class Transform(
 ) : Component<Transform>, Comparable<Transform> {
     override fun type() = Transform
 
+    operator fun contains(other: Transform): Boolean {
+        val otherCenterX = other.position.x + other.size.x * 0.5f
+        val otherCenterY = other.position.y + other.size.y * 0.5f
+
+        return position.x <= otherCenterX && position.x + size.x >= otherCenterX
+                && position.y <= otherCenterY && position.y + size.y >= otherCenterY
+
+    }
+
     override fun compareTo(other: Transform): Int = when {
         z < other.z -> -1
         z > other.z -> 1
