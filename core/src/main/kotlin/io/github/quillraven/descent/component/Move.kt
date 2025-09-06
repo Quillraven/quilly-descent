@@ -1,11 +1,13 @@
 package io.github.quillraven.descent.component
 
+import com.badlogic.gdx.math.Vector2
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
+import ktx.math.vec2
 
 data class Move(
     var speed: Float,
-    var angle: Float = -1f,
+    var direction: Vector2 = vec2(),
 ) : Component<Move> {
     override fun type() = Move
 

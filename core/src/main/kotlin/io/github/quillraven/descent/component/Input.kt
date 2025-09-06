@@ -5,7 +5,8 @@ import com.github.quillraven.fleks.ComponentType
 import io.github.quillraven.descent.input.Command
 
 data class Input(
-    val commands: MutableList<Command> = mutableListOf()
+    val downCommands: MutableList<Command> = mutableListOf(),
+    val upCommands: MutableList<Command> = mutableListOf(),
 ) : Component<Input> {
     override fun type() = Input
 

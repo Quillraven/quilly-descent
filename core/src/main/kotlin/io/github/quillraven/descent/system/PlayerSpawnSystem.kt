@@ -38,7 +38,7 @@ class PlayerSpawnSystem(
             it += Transform(vec2(), vec2(1f, 1f))
             it += Graphic(playerRegion)
             it += Input()
-            it += Move(2f)
+            it += Move(4f)
             it += Tag.CAMERA_FOCUS
             it += Tag.PLAYER
         }
