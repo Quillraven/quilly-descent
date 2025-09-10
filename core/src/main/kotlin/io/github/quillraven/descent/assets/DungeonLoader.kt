@@ -11,7 +11,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import io.github.quillraven.descent.procgen.IntVector2
+import io.github.quillraven.descent.procgen.Direction
 import io.github.quillraven.descent.procgen.generateDungeon
 import ktx.app.gdxError
 import ktx.assets.getLoader
@@ -50,12 +50,13 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
         // 1) generate some random dungeon data using procedural generation
         log.debug { "Loading dungeon of difficulty ${parameter.difficulty.name}" }
         val dungeonData = generateDungeon(
-            dimension = parameter.difficulty.dimension,
+            width = parameter.difficulty.width,
+            height = parameter.difficulty.height,
             criticalPathLength = parameter.difficulty.criticalPathLength.random(),
             numBranches = parameter.difficulty.numBranches.random(),
             branchLength = parameter.difficulty.branchLength,
         )
-        log.debug { "\n$dungeonData" }
+        log.debug { "\n${dungeonData.toDebugString()}" }
 
         // 2) convert raw data to real game dungeon data using random Tiled maps for the dungeon
         val mapsFolder = resolver.resolve("assets/maps")
@@ -66,7 +67,6 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
             rooms = Array(dungeonData.width) { x ->
                 Array(dungeonData.height) { y ->
                     val room = dungeonData.rooms[x][y] ?: return@Array null
-                    val (roomX, roomY) = room.location
                     val tiledMapPath = mapPool.random().path()
                     val tiledMap = tiledMapLoader.load(tiledMapPath)
                     val doorLocations = updateDoorTiles(tiledMapPath, tiledMap, room.doorDirections)
@@ -74,7 +74,8 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
                     val playerSpawn = spawnObjects.single { it.name == "player" }
 
                     Room(
-                        location = vec2(roomX.toFloat(), roomY.toFloat()),
+                        indexX = room.indexX,
+                        indexY = room.indexY,
                         type = room.type,
                         tiledMap = tiledMap,
                         doorLocations = doorLocations,
@@ -88,16 +89,15 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
     private fun updateDoorTiles(
         tiledMapPath: String,
         tiledMap: TiledMap,
-        doorDirections: Set<IntVector2>
-    ): Map<DoorType, Vector2> {
+        doorDirections: Set<Direction>
+    ): Map<Direction, Vector2> {
         val doorLayer = tiledMap.layer("doors")
-        return doorDirections.associate { direction ->
+        return doorDirections.associateWith { direction ->
             val doorObjects = when (direction) {
-                IntVector2.UP -> doorLayer.objects.filter { it.name == "up" }
-                IntVector2.DOWN -> doorLayer.objects.filter { it.name == "down" }
-                IntVector2.RIGHT -> doorLayer.objects.filter { it.name == "right" }
-                IntVector2.LEFT -> doorLayer.objects.filter { it.name == "left" }
-                else -> gdxError("Invalid direction for doors: $direction")
+                Direction.UP -> doorLayer.objects.filter { it.name == "up" }
+                Direction.DOWN -> doorLayer.objects.filter { it.name == "down" }
+                Direction.RIGHT -> doorLayer.objects.filter { it.name == "right" }
+                Direction.LEFT -> doorLayer.objects.filter { it.name == "left" }
             }
 
             if (doorObjects.isEmpty()) {
@@ -113,7 +113,7 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
             val cellIndexY = (spawnPointY / tiledMap.tileHeight).toInt()
 
             // return door location
-            DoorType.ofDirection(direction.x, direction.y) to vec2(cellIndexX.toFloat(), cellIndexY.toFloat())
+            vec2(cellIndexX.toFloat(), cellIndexY.toFloat())
         }
     }
 

@@ -2,10 +2,10 @@ package io.github.quillraven.descent.component
 
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
-import io.github.quillraven.descent.assets.DoorType
+import io.github.quillraven.descent.procgen.Direction
 
 data class Door(
-    val type: DoorType,
+    val direction: Direction,
     var locked: Boolean = true,
 ) : Component<Door> {
     override fun type() = Door

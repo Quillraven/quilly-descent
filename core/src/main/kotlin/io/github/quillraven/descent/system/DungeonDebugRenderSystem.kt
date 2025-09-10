@@ -14,7 +14,6 @@ import io.github.quillraven.descent.assets.Room
 import io.github.quillraven.descent.procgen.RoomType
 import ktx.math.component1
 import ktx.math.component2
-import ktx.math.times
 
 class DungeonDebugRenderSystem(
     private val batch: Batch = inject(),
@@ -39,7 +38,8 @@ class DungeonDebugRenderSystem(
 
         rooms.forEach { room ->
             val (roomW, roomH) = room.size
-            val (roomX, roomY) = room.location * room.size
+            val roomX = room.indexX * room.size.x
+            val roomY = room.indexY * room.size.y
 
             // only render rooms within camera view, and only if camera.zoom == 1f (=default)
             // otherwise, we are zoomed out and want to simply render the entire dungeon for easier debugging

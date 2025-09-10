@@ -8,12 +8,12 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
 import com.github.quillraven.fleks.World.Companion.inject
 import io.github.quillraven.descent.assets.AtlasAsset
-import io.github.quillraven.descent.assets.DoorType
 import io.github.quillraven.descent.assets.Room
 import io.github.quillraven.descent.component.Door
 import io.github.quillraven.descent.component.Graphic
 import io.github.quillraven.descent.component.Tag
 import io.github.quillraven.descent.component.Transform
+import io.github.quillraven.descent.procgen.Direction
 import io.github.quillraven.descent.tiled.TiledService
 import ktx.app.gdxError
 import ktx.math.component1
@@ -34,13 +34,14 @@ class DoorSystem(
         val playerInDoor = players.any { player -> player[Transform] in entity[Transform] }
         if (!playerInDoor) return
 
-        val (roomX, roomY) = tiledService.activeRoom.location
+        val roomX = tiledService.activeRoom.indexX
+        val roomY = tiledService.activeRoom.indexY
         val dungeon = tiledService.activeDungeon
-        val nextRoom = when (entity[Door].type) {
-            DoorType.TOP -> dungeon.roomAt(roomX.toInt(), roomY.toInt() + 1)
-            DoorType.LEFT -> dungeon.roomAt(roomX.toInt() - 1, roomY.toInt())
-            DoorType.RIGHT -> dungeon.roomAt(roomX.toInt() + 1, roomY.toInt())
-            DoorType.BOTTOM -> dungeon.roomAt(roomX.toInt(), roomY.toInt() - 1)
+        val nextRoom = when (entity[Door].direction) {
+            Direction.UP -> dungeon.roomAt(roomX, roomY + 1)
+            Direction.LEFT -> dungeon.roomAt(roomX - 1, roomY)
+            Direction.RIGHT -> dungeon.roomAt(roomX + 1, roomY)
+            Direction.DOWN -> dungeon.roomAt(roomX, roomY - 1)
         }
         tiledService.setActiveDungeonRoom(dungeon, nextRoom)
     }
@@ -57,11 +58,11 @@ class DoorSystem(
             }
 
             val rotation = when (doorType) {
-                DoorType.LEFT -> 180f
+                Direction.LEFT -> 180f
                 else -> 0f
             }
             val region = when (doorType) {
-                DoorType.TOP, DoorType.BOTTOM -> doorUpRegion
+                Direction.UP, Direction.DOWN -> doorUpRegion
                 else -> doorLeftRegion
             }
             world.entity { e ->
