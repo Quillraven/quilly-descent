@@ -14,7 +14,7 @@ import io.github.quillraven.descent.component.Graphic
 import io.github.quillraven.descent.component.Tag
 import io.github.quillraven.descent.component.Transform
 import io.github.quillraven.descent.procgen.Direction
-import io.github.quillraven.descent.tiled.TiledService
+import io.github.quillraven.descent.tiled.DungeonService
 import ktx.app.gdxError
 import ktx.math.component1
 import ktx.math.component2
@@ -23,7 +23,7 @@ import ktx.tiled.forEachLayer
 
 class DoorSystem(
     atlas: TextureAtlas = inject(AtlasAsset.GAME_OBJECTS.name),
-    private val tiledService: TiledService = inject(),
+    private val dungeonService: DungeonService = inject(),
 ) : IteratingSystem(family = family { all(Door, Transform) }) {
 
     private val doorUpRegion = atlas.findRegion(("doors/normal_top")) ?: gdxError("No 'normal_top' door region")
@@ -34,16 +34,16 @@ class DoorSystem(
         val playerInDoor = players.any { player -> player[Transform] in entity[Transform] }
         if (!playerInDoor) return
 
-        val roomX = tiledService.activeRoom.indexX
-        val roomY = tiledService.activeRoom.indexY
-        val dungeon = tiledService.activeDungeon
+        val roomX = dungeonService.activeRoom.indexX
+        val roomY = dungeonService.activeRoom.indexY
+        val dungeon = dungeonService.activeDungeon
         val nextRoom = when (entity[Door].direction) {
             Direction.UP -> dungeon.roomAt(roomX, roomY + 1)
             Direction.LEFT -> dungeon.roomAt(roomX - 1, roomY)
             Direction.RIGHT -> dungeon.roomAt(roomX + 1, roomY)
             Direction.DOWN -> dungeon.roomAt(roomX, roomY - 1)
         }
-        tiledService.setActiveDungeonRoom(dungeon, nextRoom)
+        dungeonService.setRoom(nextRoom)
     }
 
     fun setRoom(room: Room, tiledMap: TiledMap) {

@@ -14,9 +14,9 @@ class AssetService(resolver: FileHandleResolver = InternalFileHandleResolver()) 
         setLoader(Dungeon::class.java, DungeonLoader(resolver))
     }
 
-    fun get(difficulty: DungeonDifficulty, type: DungeonType): Dungeon {
+    fun get(difficulty: DungeonDifficulty, tileset: DungeonTileset): Dungeon {
         val dungeonName = "Dungeon-${difficulty.name}"
-        val parameter = DungeonLoaderParameters(difficulty, type, GdxGame.UNIT_SCALE)
+        val parameter = DungeonLoaderParameters(difficulty, tileset, GdxGame.UNIT_SCALE)
         manager.load(dungeonName, Dungeon::class.java, parameter)
         manager.finishLoading()
         return manager.get(dungeonName, Dungeon::class.java)

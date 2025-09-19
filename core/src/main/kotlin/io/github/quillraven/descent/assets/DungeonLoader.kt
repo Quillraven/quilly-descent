@@ -60,8 +60,8 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
 
         // 2) convert raw data to real game dungeon data using random Tiled maps for the dungeon
         val mapsFolder = resolver.resolve("assets/maps")
-        val mapPool = mapsFolder.list { it.name.startsWith("${parameter.type.fileNameId}-") }
-        require(mapPool.isNotEmpty()) { "There are no maps for dungeon type '${parameter.type}'" }
+        val mapPool = mapsFolder.list { it.name.startsWith("${parameter.tileset.fileNameId}-") }
+        require(mapPool.isNotEmpty()) { "There are no maps for dungeon tileset '${parameter.tileset}'" }
 
         return Dungeon(
             rooms = Array(dungeonData.width) { x ->
@@ -69,7 +69,7 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
                     val room = dungeonData.rooms[x][y] ?: return@Array null
                     val tiledMapPath = mapPool.random().path()
                     val tiledMap = tiledMapLoader.load(tiledMapPath)
-                    val doorLocations = updateDoorTiles(tiledMapPath, tiledMap, room.doorDirections)
+                    val doorLocations = createDoorLocations(tiledMapPath, tiledMap, room.doorDirections)
                     val spawnObjects = tiledMap.layer("spawns").objects
                     val playerSpawn = spawnObjects.single { it.name == "player" }
 
@@ -86,20 +86,14 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
         )
     }
 
-    private fun updateDoorTiles(
+    private fun createDoorLocations(
         tiledMapPath: String,
         tiledMap: TiledMap,
         doorDirections: Set<Direction>
     ): Map<Direction, Vector2> {
         val doorLayer = tiledMap.layer("doors")
         return doorDirections.associateWith { direction ->
-            val doorObjects = when (direction) {
-                Direction.UP -> doorLayer.objects.filter { it.name == "up" }
-                Direction.DOWN -> doorLayer.objects.filter { it.name == "down" }
-                Direction.RIGHT -> doorLayer.objects.filter { it.name == "right" }
-                Direction.LEFT -> doorLayer.objects.filter { it.name == "left" }
-            }
-
+            val doorObjects = doorLayer.objects.filter { it.name == direction.name.lowercase() }
             if (doorObjects.isEmpty()) {
                 gdxError("Missing door area for direction $direction in map $tiledMapPath")
             }
@@ -132,6 +126,6 @@ class DungeonLoader(private val resolver: FileHandleResolver) :
 
 data class DungeonLoaderParameters(
     val difficulty: DungeonDifficulty,
-    val type: DungeonType,
+    val tileset: DungeonTileset,
     val unitScale: Float = 1f,
 ) : AssetLoaderParameters<Dungeon>()

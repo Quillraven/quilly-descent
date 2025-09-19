@@ -1,5 +1,5 @@
 package io.github.quillraven.descent.assets
 
-enum class DungeonType(val fileNameId: String) {
+enum class DungeonTileset(val fileNameId: String) {
     DEFAULT("default")
 }
